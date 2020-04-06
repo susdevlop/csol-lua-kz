@@ -65,7 +65,7 @@ function UI.Event:OnChat(msg)
 	--管理员操作
 	if Identity.value == "admin" then
 		AdminOrder(msg)
-	 end
+	end
 end
 --按键信号
 function UI.Event:OnInput(inputs)
@@ -145,10 +145,10 @@ end
 ---------------------------------------------
 --同步事件
 function Sync.Time_Real:OnSync()
- UI_Timer:Update()
+	UI_Timer:Update()
 end
 function Time_Win:OnSync()
- UI_Win:Update()
+	UI_Win:Update()
 end
 function Sync.State:OnSync()
     if Sync.State.value == 3 then
@@ -161,11 +161,11 @@ function Sync.State:OnSync()
 	end
 end
 function Sync.numsb:OnSync()
- print(Sync.numsb.value)
+	print(Sync.numsb.value)
 end
 -------------------每帧事件
 function UI.Event:OnUpdate (time)
- UI.Signal(S_Update)
+ 	UI.Signal(S_Update)
 	up:hide()
 	down:hide()
 	left:hide()
@@ -179,7 +179,7 @@ function UI.Event:OnUpdate (time)
 end
 --复活事件
 function UI.Event:OnSpawn ()
-UI_Win:Hide()
+	UI_Win:Hide()
 end
 
 
@@ -226,7 +226,7 @@ end
 
 function AdminOrder(msg)
 --获取管理员菜单
-	if string.find(msg, "_help") and #msg == #"_help" then
+	if string.find(msg, "#_help") and #msg == #"#_help" then
 	    admin_help()
 	end
 --获取全房玩家index

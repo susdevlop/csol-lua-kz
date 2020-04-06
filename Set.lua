@@ -43,8 +43,8 @@ function Con_Extent(player)        --范围回点添加
 	Extent(-51,81,11,-39,79,11,-52,81,17,player)
 	Extent(-43,81,6,-47,79,6,-41,80,7,player)
 
-	Extent(-53,86,0,-55,70,0,-53,83,11,player)
-	Extent(-56,77,0,-64,71,0,-53,83,11,player)
+	-- Extent(-53,86,0,-55,70,0,-53,83,11,player)
+	-- Extent(-56,77,0,-64,71,0,-53,83,11,player)
 	Extent(-67,79,12,-57,85,12,-67,80,17,player)
 	-- Extent(-0,0,0,-0,0,0,0,0,0,player)
 	-- Extent(-0,0,0,-0,0,0,0,0,0,player)

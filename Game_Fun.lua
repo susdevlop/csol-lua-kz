@@ -104,27 +104,27 @@ function Extent(x1,y1,z1,x2,y2,z2,x3,y3,z3,player)
 end
 
 --暂停函数
-function Pause(player,signal)
-    if signal == S_Pause then
-	    if  Sync[player.index].State.value == 2 then
-		   player.user["time_pause"] = Game.GetTime()
-		   player.user["position_pause"].x = player.position.x
-		   player.user["position_pause"].y = player.position.y
-		   player.user["position_pause"].z = player.position.z
-		   Sync[player.index].State.value = 3
-	    elseif Sync[player.index].State.value == 3 then
-		   player.user["time_start"] = player.user["time_start"] + Game.GetTime() - player.user["time_pause"]
-		   if player.user["position_pause"].x == nil then            --没有存点-无效
-		       return
-	       end
-		   player.position = {x = player.user["position_pause"].x,
-		   y = player.user["position_pause"].y,
-		   z = player.user["position_pause"].z}
-		   player.velocity={x=0,y=0,z=0}
-		   Sync[player.index].State.value = 2
-	    end
-    end
-end
+-- function Pause(player,signal)
+--     if signal == S_Pause then
+-- 	    if  Sync[player.index].State.value == 2 then
+-- 		   player.user["time_pause"] = Game.GetTime()
+-- 		   player.user["position_pause"].x = player.position.x
+-- 		   player.user["position_pause"].y = player.position.y
+-- 		   player.user["position_pause"].z = player.position.z
+-- 		   Sync[player.index].State.value = 3
+-- 	    elseif Sync[player.index].State.value == 3 then
+-- 		   player.user["time_start"] = player.user["time_start"] + Game.GetTime() - player.user["time_pause"]
+-- 		   if player.user["position_pause"].x == nil then            --没有存点-无效
+-- 		       return
+-- 	       end
+-- 		   player.position = {x = player.user["position_pause"].x,
+-- 		   y = player.user["position_pause"].y,
+-- 		   z = player.user["position_pause"].z}
+-- 		   player.velocity={x=0,y=0,z=0}
+-- 		   Sync[player.index].State.value = 2
+-- 	    end
+--     end
+-- end
 --存读点函数
 function StorePoint(player,signal)
  --存点信号判定
@@ -176,9 +176,9 @@ function StorePoint(player,signal)
     end
 end
 
-function changeState()
-	Sync[Game.Player.index]:editState()
-end
+-- function changeState()
+-- 	Sync[Game.Player.index]:editState()
+-- end
 --模型更改
 function PlayerModel(player,signal)
  if signal == 4000 then

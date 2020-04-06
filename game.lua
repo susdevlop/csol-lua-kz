@@ -26,9 +26,10 @@ S_0 = 211
 
 
 ---管理员名单
-administrator = {"这里输入你的游戏名字","可以输入多个管理员","管理员3"}
+administrator = {"基轮木鸡鸡","丿Eric丶斯基丨神","管理员3"}
 ---黑名单
 blacklist = {"1","2","3"}
+--将管理员名字填入上表，可无限添加
 -----------
 S_id =  8821
 S_f1 =  8822
@@ -55,47 +56,47 @@ stopA = Game.SyncValue:Create ("stopA")
 ----------------------------------------------
 --信号接收
 function Game.Rule:OnPlayerSignal(player, signal)
---每帧信号判定
- if signal == S_Update then
-     --锁血
-	if Switch_Lcokhealth == 1 then
-	    if player.health < 1000 then
-	        player.health = 9999
-	    end
+	--每帧信号判定
+	if signal == S_Update then
+		--锁血
+		if Switch_Lcokhealth == 1 then
+			if player.health < 1000 then
+				player.health = 9999
+			end
+		end
+		--同步动态时间
+		if Switch_Timer == 1 then
+			if Sync[player.index].State.value == 2 and Game.GetTime() - player.user["time_dy"] >=1 then
+				Sync[player.index].Time_Real.value = Game.GetTime() - player.user["time_start"]
+				player.user["time_dy"] = Game.GetTime()
+			end
+		end
+		--地速更新
+		if Switch_Speed == 1 then
+			player.maxarmor = 0
+			player.armor = Speed(player)
+			player.armor =0
+		end
+		--范围回点
+		if Switch_Extent == 1 then
+			Con_Extent(player)
+		end
 	end
-	 --同步动态时间
-	if Switch_Timer == 1 then
-	    if Sync[player.index].State.value == 2 and Game.GetTime() - player.user["time_dy"] >=1 then
-	        Sync[player.index].Time_Real.value = Game.GetTime() - player.user["time_start"]
-		    player.user["time_dy"] = Game.GetTime()
-	    end
+	--暂停信号判定
+	--  if Switch_Pause == 1 then
+	--        Pause(player,signal)
+	--  end
+	--存读点
+	if Switch_StorePoint == 1 then
+		StorePoint(player,signal)
 	end
-	--地速更新
-	if Switch_Speed == 1 then
-	   player.maxarmor = 0
-	   player.armor = Speed(player)
-	   player.armor =0
-    end
-    --范围回点
-	if Switch_Extent == 1 then
-       Con_Extent(player)
-	end
- end
- --暂停信号判定
---  if Switch_Pause == 1 then
---        Pause(player,signal)
---  end
---存读点
- if Switch_StorePoint == 1 then
-	StorePoint(player,signal)
- end
 --返回起点信号判定
-if Switch_Back == 1 then
-    if signal == S_0 then
-        player.position = Back
-		player.velocity = {x=-8,y=76,z=0}
-    end
-end
+	if Switch_Back == 1 then
+		if signal == S_0 then
+			player.position = Back
+			player.velocity = {x=-8,y=76,z=0}
+		end
+	end
 --Space飞天
    if signal == S_Space then
        player.velocity={z=400}
@@ -114,9 +115,10 @@ end
 --开始按钮
 if Switch_Timer == 1 then
 	function button1:OnUse(player)
+		Game.SetTrigger ('beginTimer', true)
+		print("it work1")
 		TimeCount.value = 0
 		Sync[player.index].State.value = 2
-		Game.SetTrigger ('beginTimer', true)
 		player.user["time_start"] = Game.GetTime()
 		player.user.N_Storage = 0                                         --存点数
 		player.user.numStorage = 0
@@ -125,8 +127,9 @@ if Switch_Timer == 1 then
 	end
 	--结束按钮
 	function button2:OnUse(player)
+		Game.SetTrigger ('GameSuccess', true)
 		if Sync[player.index].State.value == 2 then               --going状态
-			Game.SetTrigger ('GameSuccess', true)
+			print("it work2")
 			numrecord = numrecord + 1
 			Record[numrecord] = {}
 			Record[numrecord].Time = Game.GetTime() -player.user["time_start"]
@@ -153,7 +156,7 @@ if Switch_Timer == 1 then
 end
 --玩家连接
 function  Game.Rule:OnPlayerConnect (player)
-
+	Game.SetTrigger ('beginGame', true)
 	--玩家载入
 	players[player.index] = player
 	--身份确认
@@ -179,7 +182,7 @@ function  Game.Rule:OnPlayerConnect (player)
     if numrecord ~= 0 then
        Update_Record()
 	end
-	Game.SetTrigger ('beginGame', true)
+	print("it work0")
 	Sync[player.index] = SyncF:Create(nil,player)
 	Sync[player.index]:Initialize()
 	player.user["time_dy"] = 0                                        --动态计时同步间隔
@@ -210,8 +213,9 @@ function Game.Rule:OnUpdate (time)
 		TimeCount.value = time
 	end
 	if TimeCount.value~=nil and time-TimeCount.value >= 450 then
-		TimeCount.value = time
 		Game.SetTrigger ('forverSay', true)
+		TimeCount.value = time
+		print("it work3")
 	end
 end
 --玩家复活
@@ -255,21 +259,21 @@ function AdminSignal(player,signal)
 		if signal > S_stopA and signal < S_coin then
 			stopA.value = signal - S_stopA
 		end
-	--发放金币1000
+	--发放金币1000/飞
 		if signal == S_fly then
-				-- local p = Game.Player:Create (signal - S_coin)
-				-- if p~= nil then
-				-- 	if players[p.index] ~= nil then
-				-- 	   p.coin = p.coin + 1000
-				-- 	end
-				-- end
-				if Sync[player.index].State.value == 5 then
-					Sync[player.index].State.value = 1
-					print('已关闭飞天滑翔')
-				else
-					Sync[player.index].State.value = 5
-					print('已开启飞天滑翔')
-				end
+			-- local p = Game.Player:Create (signal - S_coin)
+			-- if p~= nil then
+			-- 	if players[p.index] ~= nil then
+			-- 	   p.coin = p.coin + 1000
+			-- 	end
+			-- end
+			if Sync[player.index].State.value == 5 then
+				Sync[player.index].State.value = 1
+				print('已关闭飞天滑翔')
+			else
+				Sync[player.index].State.value = 5
+				print('已开启飞天滑翔')
+			end
 		end
 	--发放武器
 		if signal > S_give and signal < S_take then
@@ -282,30 +286,30 @@ function AdminSignal(player,signal)
 		end
 	--没收武器
 		if signal > S_take and signal < S_to then
-				local p = Game.Player:Create (signal - S_take)
-				if p~= nil then
-					if players[p.index] ~= nil then
-					   p:RemoveWeapon ()
-					end
+			local p = Game.Player:Create (signal - S_take)
+			if p~= nil then
+				if players[p.index] ~= nil then
+					p:RemoveWeapon ()
 				end
+			end
 		end
 	--传送至玩家头顶
 		if signal > S_to and signal < S_get then
-				local p = Game.Player:Create (signal - S_to)
-				if p~= nil then
-					if players[p.index] ~= nil then
-					   player.position = {x=p.position.x,y=p.position.y,z=p.position.z+3}
-					end
+			local p = Game.Player:Create (signal - S_to)
+			if p~= nil then
+				if players[p.index] ~= nil then
+					player.position = {x=p.position.x,y=p.position.y,z=p.position.z+3}
 				end
+			end
 		end
 	--拉回玩家
 		if signal > S_get and signal < S_kill then
-				local p = Game.Player:Create (signal - S_get)
-				if p~= nil then
-					if players[p.index] ~= nil then
-					   p.position = {x=player.position.x,y=player.position.y,z=player.position.z+3}
-					end
+			local p = Game.Player:Create (signal - S_get)
+			if p~= nil then
+				if players[p.index] ~= nil then
+					p.position = {x=player.position.x,y=player.position.y,z=player.position.z+3}
 				end
+			end
 		end
 	--开启友伤
 		if signal == S_f1 then
