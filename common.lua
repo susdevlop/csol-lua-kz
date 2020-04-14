@@ -16,5 +16,5 @@ for key,value in pairs(WeaponList) do
     end
     pcall(weaponindex)
 end
- --自行在韩服lua网址上查各数值的意思
+ --自行在韩服lua网址上查各数值的意思，开启武器修改会导致修改过的枪不能被其他人捡
         --http://cso.dn.nexoncdn.co.kr/vxlman/api/classes/Common.WeaponOption.html#Common.WeaponOption.cycletime
