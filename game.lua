@@ -115,7 +115,7 @@ end
 --开始按钮
 if Switch_Timer == 1 then
 	function button1:OnUse(player)
-		Game.SetTrigger ('beginTimer', true)
+		Game.SetTrigger ('beginTimer', true)--Game.SetTrigger('这里填游戏里面的脚本执行方块的填写的名字'，true)，这里实行点击开始按钮就会出现公告
 		print("it work1")
 		TimeCount.value = 0
 		Sync[player.index].State.value = 2
@@ -127,7 +127,7 @@ if Switch_Timer == 1 then
 	end
 	--结束按钮
 	function button2:OnUse(player)
-		Game.SetTrigger ('GameSuccess', true)
+		Game.SetTrigger ('GameSuccess', true)--这里实行点击结束按钮后就会出现公告
 		if Sync[player.index].State.value == 2 then               --going状态
 			print("it work2")
 			numrecord = numrecord + 1
@@ -146,9 +146,9 @@ if Switch_Timer == 1 then
 		end
 	end
 	function button3:OnUse(player)
-		Sync[player.index].State.value = 5
+		Sync[player.index].State.value = 5  --这里只是个人在作者通道设置了点击按钮就实现开启飞天的功能
 	end
-	function button4:OnUse(player)
+	function button4:OnUse(player)--这里只是个人在作者通道设置了点击按钮就实现关闭飞天的功能
 		if Sync[player.index].State.value == 5 then
 			Sync[player.index].State.value = 1
 		end
